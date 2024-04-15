@@ -20,8 +20,7 @@ final class RocketChatWebhookChannelTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /** @test */
-    public function it_can_send_a_notification(): void
+    public function test_it_can_send_a_notification(): void
     {
         $client = Mockery::mock(GuzzleHttpClient::class);
 
@@ -45,8 +44,7 @@ final class RocketChatWebhookChannelTest extends TestCase
         $channel->send(new TestNotifiable(), new TestNotification());
     }
 
-    /** @test */
-    public function it_handles_generic_errors(): void
+    public function test_it_handles_generic_errors(): void
     {
         $client = Mockery::mock(GuzzleHttpClient::class);
         $this->expectException(CouldNotSendNotification::class);
@@ -71,8 +69,7 @@ final class RocketChatWebhookChannelTest extends TestCase
         $channel->send(new TestNotifiable(), new TestNotification());
     }
 
-    /** @test */
-    public function it_does_not_send_a_message_when_channel_missed(): void
+    public function test_it_does_not_send_a_message_when_channel_missed(): void
     {
         $this->expectException(CouldNotSendNotification::class);
 
@@ -81,8 +78,7 @@ final class RocketChatWebhookChannelTest extends TestCase
         $channel->send(new TestNotifiable(), new TestNotificationWithMissedChannel());
     }
 
-    /** @test */
-    public function it_does_not_send_a_message_when_from_missed(): void
+    public function test_it_does_not_send_a_message_when_from_missed(): void
     {
         $this->expectException(CouldNotSendNotification::class);
 
