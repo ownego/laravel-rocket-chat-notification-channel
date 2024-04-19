@@ -31,13 +31,6 @@ final class RocketChatMessageTest extends TestCase
         $this->assertSame(['text' => 'test-content'], $message->toArray());
     }
 
-    public function test_it_can_set_the_channel(): void
-    {
-        $message = (new RocketChatMessage())->to('test-channel');
-
-        $this->assertSame('test-channel', $message->getChannel());
-    }
-
     public function test_it_can_set_the_from(): void
     {
         $message = (new RocketChatMessage())->from('test-token');

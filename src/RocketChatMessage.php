@@ -6,9 +6,6 @@ namespace NotificationChannels\RocketChat;
 
 class RocketChatMessage
 {
-    /** @var string|null RocketChat channel id. */
-    protected $channel = null;
-
     /** @var string|null A user or app access token. */
     protected $from = null;
 
@@ -48,11 +45,6 @@ class RocketChatMessage
         $this->content($content);
     }
 
-    public function getChannel(): ?string
-    {
-        return $this->channel;
-    }
-
     public function getFrom(): ?string
     {
         return $this->from;
@@ -67,19 +59,6 @@ class RocketChatMessage
     public function from(string $accessToken): self
     {
         $this->from = $accessToken;
-
-        return $this;
-    }
-
-    /**
-     * Set the RocketChat channel the message should be sent to.
-     *
-     * @param  string $channel
-     * @return $this
-     */
-    public function to(string $channel): self
-    {
-        $this->channel = $channel;
 
         return $this;
     }
@@ -184,7 +163,6 @@ class RocketChatMessage
 
         return array_filter([
             'text' => $this->content,
-            'channel' => $this->channel,
             'alias' => $this->alias,
             'emoji' => $this->emoji,
             'avatar' => $this->avatar,

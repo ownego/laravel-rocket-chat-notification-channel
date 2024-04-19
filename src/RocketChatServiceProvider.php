@@ -24,8 +24,7 @@ final class RocketChatServiceProvider extends ServiceProvider
                 return new RocketChat(
                     new HttpClient(),
                     Config::get('services.rocketchat.url'),
-                    Config::get('services.rocketchat.token'),
-                    Config::get('services.rocketchat.channel')
+                    Config::get('services.rocketchat.token')
                 );
             });
     }

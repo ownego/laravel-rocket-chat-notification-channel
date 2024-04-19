@@ -39,19 +39,13 @@ final class RocketChatWebhookChannel
         /** @var \NotificationChannels\RocketChat\RocketChatMessage $message */
         $message = $notification->toRocketChat($notifiable);
 
-        $to = $message->getChannel() ?: $notifiable->routeNotificationFor('RocketChat');
-        $to = $to ?: $this->rocketChat->getDefaultChannel();
-        if ($to === null) {
-            throw CouldNotSendNotification::missingTo();
-        }
-
         $from = $message->getFrom() ?: $this->rocketChat->getToken();
         if (! $from) {
             throw CouldNotSendNotification::missingFrom();
         }
 
         try {
-            $this->sendMessage($to, $message);
+            $this->sendMessage($message);
         } catch (ClientException $exception) {
             throw CouldNotSendNotification::rocketChatRespondedWithAnError($exception);
         } catch (Exception $exception) {
@@ -60,12 +54,11 @@ final class RocketChatWebhookChannel
     }
 
     /**
-     * @param  string  $to
      * @param  \NotificationChannels\RocketChat\RocketChatMessage  $message
      * @return void
      */
-    private function sendMessage(string $to, RocketChatMessage $message): void
+    private function sendMessage(RocketChatMessage $message): void
     {
-        $this->rocketChat->sendMessage($to, $message->toArray());
+        $this->rocketChat->sendMessage($message->toArray());
     }
 }

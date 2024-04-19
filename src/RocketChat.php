@@ -17,9 +17,6 @@ final class RocketChat
     /** @var string */
     private $token;
 
-    /** @var string|null */
-    private $defaultChannel;
-
     /**
      * @param  \GuzzleHttp\Client  $http
      * @param  string  $url
@@ -27,12 +24,11 @@ final class RocketChat
      * @param  string|null  $defaultChannel
      * @return void
      */
-    public function __construct(HttpClient $http, string $url, string $token, ?string $defaultChannel = null)
+    public function __construct(HttpClient $http, string $url, string $token)
     {
         $this->http = $http;
         $this->url = rtrim($url, '/');
         $this->token = $token;
-        $this->defaultChannel = $defaultChannel;
     }
 
     /**
@@ -46,30 +42,17 @@ final class RocketChat
     }
 
     /**
-     * Returns default channel id or name.
-     *
-     * @return string|null
-     */
-    public function getDefaultChannel(): ?string
-    {
-        return $this->defaultChannel;
-    }
-
-    /**
      * Send a message.
      *
-     * @param  string  $to
      * @param  array  $message
      * @return void
      */
-    public function sendMessage(string $to, array $message): void
+    public function sendMessage(array $message): void
     {
         $url = sprintf('%s/hooks/%s', $this->url, $this->token);
 
         $this->post($url, [
-            'json' => array_merge($message, [
-                'channel' => $to,
-            ]),
+            'json' => $message,
         ]);
     }
 

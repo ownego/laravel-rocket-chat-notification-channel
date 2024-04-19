@@ -11,16 +11,6 @@ use RuntimeException;
 final class CouldNotSendNotification extends RuntimeException
 {
     /**
-     * Thrown when channel identifier is missing.
-     *
-     * @return static
-     */
-    public static function missingTo(): self
-    {
-        return new static('RocketChat notification was not sent. Channel identifier is missing.');
-    }
-
-    /**
      * Thrown when user or app access token is missing.
      *
      * @return static

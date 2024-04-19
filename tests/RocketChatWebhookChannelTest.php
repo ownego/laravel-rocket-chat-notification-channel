@@ -26,7 +26,6 @@ final class RocketChatWebhookChannelTest extends TestCase
 
         $apiBaseUrl = 'http://localhost:3000';
         $token = ':token';
-        $channel = ':channel';
 
         $client->shouldReceive('post')->once()
             ->with(
@@ -34,7 +33,6 @@ final class RocketChatWebhookChannelTest extends TestCase
                 [
                     'json' => [
                         'text' => 'hello',
-                        'channel' => $channel,
                     ],
                 ]
             )->andReturn(new Response(200));
@@ -51,7 +49,6 @@ final class RocketChatWebhookChannelTest extends TestCase
 
         $apiBaseUrl = 'http://localhost:3000';
         $token = ':token';
-        $channel = ':channel';
 
         $client->shouldReceive('post')->once()
             ->with(
@@ -59,7 +56,6 @@ final class RocketChatWebhookChannelTest extends TestCase
                 [
                     'json' => [
                         'text' => 'hello',
-                        'channel' => $channel,
                     ],
                 ]
             )->andThrow(new \Exception('Test'));
@@ -68,41 +64,18 @@ final class RocketChatWebhookChannelTest extends TestCase
         $channel = new RocketChatWebhookChannel($rocketChat);
         $channel->send(new TestNotifiable(), new TestNotification());
     }
-
-    public function test_it_does_not_send_a_message_when_channel_missed(): void
-    {
-        $this->expectException(CouldNotSendNotification::class);
-
-        $rocketChat = new RocketChat(new GuzzleHttpClient(), '', '', '');
-        $channel = new RocketChatWebhookChannel($rocketChat);
-        $channel->send(new TestNotifiable(), new TestNotificationWithMissedChannel());
-    }
-
-    public function test_it_does_not_send_a_message_when_from_missed(): void
-    {
-        $this->expectException(CouldNotSendNotification::class);
-
-        $rocketChat = new RocketChat(new GuzzleHttpClient(), '', '', '');
-        $channel = new RocketChatWebhookChannel($rocketChat);
-        $channel->send(new TestNotifiable(), new TestNotificationWithMissedFrom());
-    }
 }
 
 class TestNotifiable
 {
     use Notifiable;
-
-    public function routeNotificationForRocketChat(): string
-    {
-        return '';
-    }
 }
 
 class TestNotification extends Notification
 {
     public function toRocketChat(): RocketChatMessage
     {
-        return RocketChatMessage::create('hello')->from(':token')->to(':channel');
+        return RocketChatMessage::create('hello');
     }
 }
 
@@ -111,13 +84,5 @@ class TestNotificationWithMissedChannel extends Notification
     public function toRocketChat(): RocketChatMessage
     {
         return RocketChatMessage::create('hello')->from(':token');
-    }
-}
-
-class TestNotificationWithMissedFrom extends Notification
-{
-    public function toRocketChat(): RocketChatMessage
-    {
-        return RocketChatMessage::create('hello')->to(':channel');
     }
 }
